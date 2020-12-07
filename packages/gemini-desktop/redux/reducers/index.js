@@ -16,7 +16,7 @@ export default function rootReducer(state = initialState, action) {
 
     // FSA-compliant actions are the input
     switch (action.type) {
-
+        default: break;
     }
 
     return copy; // result: a new clean-break state to use with the react app
