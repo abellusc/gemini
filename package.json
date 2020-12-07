@@ -1,7 +1,14 @@
 {
-  "name": "root",
+  "name": "@solsticeproject/gemini",
   "private": true,
+  "scripts": {
+    "start": "lerna run --stream start",
+    "build": "lerna run --stream build",
+    "prestart:dev": "npm run build",
+    "start:dev": "lerna run --stream start:dev",
+    "postinstall": "npm run bootstrap --hoist"
+  },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "3.22.1"
   }
 }
