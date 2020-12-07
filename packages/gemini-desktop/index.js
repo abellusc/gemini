@@ -16,10 +16,14 @@ const browser = new electron.BrowserWindow({
 
 const store = getConfiguredStore(rootReducer);
 
-document.addEventListener('DOMContentLoaded', () => {
-    geminiApp.render(store);
+electron.app.whenReady().then(() => {
+    document.addEventListener('DOMContentLoaded', () => {
+        geminiApp.render(store);
+    
+        setTimeout(() => {
+            onTick(store);
+        }, 20); // ticker manages the app's queue
+    });
 
-    setTimeout(() => {
-        onTick(store);
-    }, 20); // ticker manages the app's queue
+    browser.loadFile('./app/build/index.html');
 });
