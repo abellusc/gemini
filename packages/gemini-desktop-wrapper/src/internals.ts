@@ -1,16 +1,18 @@
 import _ from 'lodash';
 import { AnyAction } from 'redux';
-import * as utils from '@solsticeproject/gemini-redux-utils';
+import utils from '@solsticeproject/gemini-redux-utils';
+import { IApplicationState } from '@solsticeproject/gemini-redux-utils';
 
 type ActionCreator = (() => AnyAction);
 const queue: ActionCreator[] = [];
 
-export function onTick(clonedState: IApplicationState) {
+// ticks every 20 ms to pump along the custom event loop
+export function onTick(clonedState: IApplicationState, store?: any) {
     if (!clonedState) return; // skip this tick, there is no state
 
-    const nextAction = clonedState.action_queue[0];
+    const nextAction = queue.shift();
     if (!!nextAction) {
-        nextAction();
+        store.dispatch(async () => await nextAction()); // calling the nextAction fn creates the action in redux so it can be processed cleanly
     }
 }
 

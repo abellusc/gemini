@@ -22,7 +22,7 @@ electron.app.whenReady().then(() => {
         //GeminiApp.render(store);
     
         setTimeout(() => {
-            internals.onTick(_.cloneDeep(store.getState()));
+            internals.onTick(_.cloneDeep(store.getState()), store);
         }, 20); // ticker manages the app's queue
     });
 

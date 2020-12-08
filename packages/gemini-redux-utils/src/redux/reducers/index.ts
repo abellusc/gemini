@@ -23,7 +23,7 @@ interface IFSA {
     error?: boolean;
 }
 
-export default function rootReducer(state = initialState, action: IFSA) {
+export default function rootReducer(state: IApplicationState = initialState, action: IFSA) {
     // Deep copy the state
     const copy = _.cloneDeep(state);
 

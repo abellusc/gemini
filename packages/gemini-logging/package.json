@@ -1,7 +1,7 @@
 {
-  "name": "@solsticeproject/gemini-redux-utils",
+  "name": "@solsticeproject/gemini-logging",
   "version": "1.0.0",
-  "description": "Common library for redux actions shared between the browser and the electron context.",
+  "description": "Common library for logging with a preconfigured logger.",
   "main": "dist/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "log4js": "^6.3.0",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
     "redux-promise": "^0.6.0"
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@tsconfig/node12": "^1.0.7",
     "@types/lodash": "^4.14.165",
+    "@types/log4js": "^2.3.5",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-promise": "^0.5.29",
