@@ -3,11 +3,13 @@
   "private": true,
   "scripts": {
     "start": "lerna run --stream start",
+    "prebuild": "npm run compile",
     "build": "lerna run --stream build",
     "prestart:dev": "npm run build",
     "start:dev": "lerna run --stream start:dev",
     "postinstall": "lerna bootstrap",
-    "clean": "lerna run --stream clean"
+    "clean": "lerna run --stream clean",
+    "compile": "lerna run --stream compile"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "4.9.0",

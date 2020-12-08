@@ -1,15 +1,18 @@
 {
   "name": "@solsticeproject/gemini-desktop-wrapper",
   "version": "1.0.0",
-  "description": "My webpack project",
-  "main": "index.js",
+  "description": "Desktop application for Gemini",
+  "main": "dist/main.js",
   "scripts": {
     "test": "jest",
     "build:dev": "DEBUG=electron-builder npx electron-builder build -m --dir --project .",
     "build:prod": "npx electron-builder build -mwl",
     "start": "node ./dist/main",
-    "build": "tsc",
-    "clean": "npx rimraf dist node_modules"
+    "prebuild:dev": "npm run compile",
+    "prebuild:prod": "npm run compile",
+    "clean": "npx rimraf dist node_modules",
+    "compile": "tsc",
+    "postinstall": "npm run compile"
   },
   "author": "Alexandra Belluscio <alexandra.belluscio@icloud.com>",
   "license": "MIT",
