@@ -8,7 +8,8 @@
     "build:dev": "DEBUG=electron-builder npx electron-builder build -m --dir --project .",
     "build:prod": "npx electron-builder build -mwl",
     "start": "node ./dist/main",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "npx rimraf dist node_modules"
   },
   "author": "Alexandra Belluscio <alexandra.belluscio@icloud.com>",
   "license": "MIT",

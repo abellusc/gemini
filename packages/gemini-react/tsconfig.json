@@ -4,7 +4,7 @@
     "declaration": true,
     "allowJs": true,
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
     "strict": false,
     "skipLibCheck": true,

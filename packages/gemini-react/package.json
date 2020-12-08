@@ -16,12 +16,13 @@
   },
   "scripts": {
     "start": "PORT=63777 NODE_ENV=production react-scripts start",
-    "build": "react-scripts build ./dist",
+    "build": "react-scripts build; cd ../..",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "npm run compile",
     "prebuild": "npm run compile",
-    "compile": "tsc"
+    "compile": "tsc",
+    "clean": "npx rimraf build dist node_modules"
   },
   "eslintConfig": {
     "extends": "react-app"

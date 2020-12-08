@@ -6,7 +6,8 @@
     "build": "lerna run --stream build",
     "prestart:dev": "npm run build",
     "start:dev": "lerna run --stream start:dev",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "clean": "lerna run --stream clean"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "4.9.0",

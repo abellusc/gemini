@@ -7,7 +7,7 @@
     "target": "es5",
     "declaration": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "rootDir": "./",
     "resolveJsonModule": true,
     "checkJs": false,
