@@ -3,23 +3,24 @@
   "version": "1.0.0",
   "description": "Desktop application for Gemini",
   "main": "dist/main.js",
+  "module": "es6",
   "scripts": {
     "test": "jest",
-    "build:dev": "DEBUG=electron-builder npx electron-builder build -m --dir --project .",
+    "build:dev": "DEBUG=electron-builder npx electron-builder build -m --dir --project ./dist",
     "build:prod": "npx electron-builder build -mwl",
     "start": "node ./dist/main",
     "prebuild:dev": "npm run compile",
     "prebuild:prod": "npm run compile",
-    "clean": "npx rimraf dist node_modules",
+    "clean": "npx rimraf dist",
     "compile": "tsc",
-    "postinstall": "npm run compile"
+    "precompile": "npm install-clean"
   },
   "author": "Alexandra Belluscio <alexandra.belluscio@icloud.com>",
   "license": "MIT",
   "dependencies": {
+    "@solsticeproject/gemini-logging": "file:../gemini-logging",
     "@solsticeproject/gemini-react": "file:../gemini-react",
     "@solsticeproject/gemini-redux-utils": "file:../gemini-redux-utils",
-    "@solsticeproject/gemini-logging": "file:../gemini-logging",
     "lodash": "4.17.20",
     "react-redux": "7.2.2",
     "react-router-dom": "5.2.0",

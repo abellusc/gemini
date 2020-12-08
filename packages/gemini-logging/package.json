@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Common library for logging with a preconfigured logger.",
   "main": "dist/index",
+  "module": "es6",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "precompile": "npm install-clean",
     "compile": "tsc",
-    "postinstall": "npm run compile",
-    "clean": "npx rimraf dist node_modules"
+    "clean": "npx rimraf dist"
   },
   "author": "",
   "license": "MIT",

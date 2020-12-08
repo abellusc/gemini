@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { AnyAction } from 'redux';
-import utils from '@solsticeproject/gemini-redux-utils';
-import { IApplicationState } from '@solsticeproject/gemini-redux-utils';
+import utils, { IApplicationState } from '@solsticeproject/gemini-redux-utils';
 
 type ActionCreator = (() => AnyAction);
 const queue: ActionCreator[] = [];

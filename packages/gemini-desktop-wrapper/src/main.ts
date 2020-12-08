@@ -2,7 +2,7 @@ import * as electron from 'electron';
 import _ from 'lodash';
 // import GeminiApp from '@solsticeproject/gemini-react';
 // @ts-ignore
-import ReduxUtils from '@solsticeproject/gemini-redux-utils';
+import GeminiRedux from '@solsticeproject/gemini-redux-utils';
 import * as internals from './internals';
 
 const APP_VERSION = '0.1-dev-unstable';
@@ -15,7 +15,9 @@ const browser = new electron.BrowserWindow({
     title: `Gemini Desktop v${APP_VERSION}`,
 });
 
-const store = ReduxUtils.getConfiguredStore(ReduxUtils.rootReducer);
+// the redux store is used at the electron level to orchestrate changes across contexts easier using redux state "magic"
+const { rootReducer } = GeminiRedux.reducers;
+const store = GeminiRedux.storage.getConfiguredStore(rootReducer);
 
 electron.app.whenReady().then(() => {
     document.addEventListener('DOMContentLoaded', () => {

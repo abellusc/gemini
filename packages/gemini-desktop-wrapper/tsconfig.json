@@ -1,24 +1,10 @@
 {
-  "extends": "@tsconfig/node12",
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "es6",
-    "allowJs": true,
-    "target": "es5",
-    "declaration": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
-    "checkJs": false,
-    "skipLibCheck": true,
-    "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "ESNext.AsyncIterable"
-    ]
-  },
+  "extends": "../../tsconfig.build.json",
   "include": ["./src"],
-  "exclude": ["node_modules", "dist", "lib", "build"]
+  "exclude": ["node_modules", "dist", "build"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./node_modules",
+    "rootDir": "./src",
+  }
 }

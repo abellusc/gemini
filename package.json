@@ -4,15 +4,19 @@
   "private": true,
   "scripts": {
     "start": "lerna run --stream start",
-    "prebuild": "npm run compile",
+    "prebuild": "npm run clean && npm run compile",
     "build": "lerna run --stream build",
     "prestart:dev": "npm run build",
     "start:dev": "lerna run --stream start:dev",
-    "postinstall": "lerna bootstrap",
-    "clean": "lerna run --stream clean",
+    "postinstall": "npm run compile && lerna bootstrap",
+    "clean:modules": "lerna clean -y",
+    "clean:builds": "npx rimraf dist; lerna run clean",
+    "clean:all": "npm run clean:modules; npm run clean:builds",
+    "precompile": "npm install-clean",
     "compile": "lerna run --stream compile"
   },
   "devDependencies": {
+    "@tsconfig/node12": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "4.9.0",
     "@typescript-eslint/parser": "4.9.0",
     "eslint": "7.15.0",
