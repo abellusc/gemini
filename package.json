@@ -1,5 +1,6 @@
 {
   "name": "@solsticeproject/gemini",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "lerna run --stream start",
