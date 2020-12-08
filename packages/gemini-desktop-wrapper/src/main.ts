@@ -1,9 +1,7 @@
 import * as electron from 'electron';
 import _ from 'lodash';
-
-import * as geminiApp from './app/src';
-import * as reducers from './redux/reducers';
-import * as internals from './internals';
+import GeminiApp from '@solsticeproject/gemini-react';
+import ReduxUtils from '@solsticeproject/gemini-redux-utils';
 
 const APP_VERSION = '0.1-dev-unstable';
 
@@ -15,11 +13,11 @@ const browser = new electron.BrowserWindow({
     title: `Gemini Desktop v${APP_VERSION}`,
 });
 
-const store = getConfiguredStore(rootReducer);
+const store = ReduxUtils.getConfiguredStore(rootReducer);
 
 electron.app.whenReady().then(() => {
     document.addEventListener('DOMContentLoaded', () => {
-        geminiApp.render(store);
+        GeminiApp.render(store);
     
         setTimeout(() => {
             onTick(_.cloneDeep(store.getState()));

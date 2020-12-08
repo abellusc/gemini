@@ -2,9 +2,11 @@
   "name": "@solsticeproject/gemini-redux-utils",
   "version": "1.0.0",
   "description": "Common library for redux actions shared between the browser and the electron context.",
-  "main": "index.js",
+  "main": "dist/index",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "author": "",
   "license": "MIT",
@@ -14,8 +16,11 @@
     "redux-promise": "^0.6.0"
   },
   "devDependencies": {
+    "@tsconfig/node12": "^1.0.7",
+    "@types/lodash": "^4.14.165",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
-    "@types/redux-promise": "^0.5.29"
+    "@types/redux-promise": "^0.5.29",
+    "typescript": "^4.1.2"
   }
 }

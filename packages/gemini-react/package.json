@@ -1,8 +1,9 @@
 {
-  "name": "gemini-react",
-  "version": "0.1.0",
+  "name": "@solsticeproject/gemini-react",
+  "version": "1.0.0",
   "private": true,
   "port": 63777,
+  "main": "dist/src/lib",
   "dependencies": {
     "@reduxjs/toolkit": "^1.1.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -15,9 +16,12 @@
   },
   "scripts": {
     "start": "PORT=63777 NODE_ENV=production react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build ./dist",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "npm run compile",
+    "prebuild": "npm run compile",
+    "compile": "tsc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@tsconfig/node12": "^1.0.7"
   }
 }

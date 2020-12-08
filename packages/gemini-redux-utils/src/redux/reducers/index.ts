@@ -1,16 +1,29 @@
 import _ from 'lodash';
 
-const initialState = {
+export interface IApplicationState {
+    working_directory: string;
+    install_directory: string;
+    data_directory: string;
+}
+
+const initialState: IApplicationState = {
     working_directory: process.cwd(),
     install_directory: '',
-    data_directory: '',
-    action_queue: [], // this holds the actions which are being processed by the electron side
+    data_directory: ''
 };
 
 // Q: Why is this outside the React context?
 // A: Yes.
 
-export default function rootReducer(state = initialState, action) {
+interface IFSA {
+    type: string,
+    payload: {
+        [key: string]: any;
+    },
+    error?: boolean;
+}
+
+export default function rootReducer(state = initialState, action: IFSA) {
     // Deep copy the state
     const copy = _.cloneDeep(state);
 

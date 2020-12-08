@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/node12",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es6",
+    "allowJs": true,
+    "target": "es5",
+    "declaration": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "rootDir": "./",
+    "resolveJsonModule": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist", "lib", "build"]
+}
