@@ -15,5 +15,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "dist", "lib", "build"]
+  "exclude": ["node_modules", "dist"]
 }
