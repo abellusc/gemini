@@ -6,8 +6,9 @@
   "module": "es6",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "precompile": "npm install-clean",
+    "precompile": "npm install",
     "compile": "tsc",
+    "compile:dev": "tsc -w",
     "clean": "npx rimraf dist"
   },
   "author": "",

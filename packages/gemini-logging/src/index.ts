@@ -2,7 +2,7 @@ import * as log4js from 'log4js';
 
 log4js.configure({
     categories: {
-        test: {
+        default: {
             appenders: [ 'stdout' ],
             level: 'info',
         }

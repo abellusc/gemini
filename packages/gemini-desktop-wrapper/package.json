@@ -8,18 +8,18 @@
     "test": "jest",
     "build:dev": "DEBUG=electron-builder npx electron-builder build -m --dir --project ./dist",
     "build:prod": "npx electron-builder build -mwl",
-    "start": "node ./dist/main",
+    "start": "npx electron ./dist/main",
     "prebuild:dev": "npm run compile",
     "prebuild:prod": "npm run compile",
     "clean": "npx rimraf dist",
     "compile": "tsc",
-    "precompile": "npm install-clean"
+    "compile:dev": "tsc -w",
+    "precompile": "npm install"
   },
   "author": "Alexandra Belluscio <alexandra.belluscio@icloud.com>",
   "license": "MIT",
   "dependencies": {
     "@solsticeproject/gemini-logging": "file:../gemini-logging",
-    "@solsticeproject/gemini-react": "file:../gemini-react",
     "@solsticeproject/gemini-redux-utils": "file:../gemini-redux-utils",
     "lodash": "4.17.20",
     "react-redux": "7.2.2",

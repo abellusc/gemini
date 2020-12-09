@@ -6,14 +6,14 @@
     "start": "lerna run --stream start",
     "prebuild": "npm run clean && npm run compile",
     "build": "lerna run --stream build",
-    "prestart:dev": "npm run build",
     "start:dev": "lerna run --stream start:dev",
     "postinstall": "npm run compile && lerna bootstrap",
     "clean:modules": "lerna clean -y",
     "clean:builds": "npx rimraf dist; lerna run clean",
     "clean:all": "npm run clean:modules; npm run clean:builds",
     "precompile": "npm install-clean",
-    "compile": "lerna run --stream compile"
+    "compile": "lerna run --stream compile",
+    "compile:dev": "lerna run --stream compile:dev"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.7",
