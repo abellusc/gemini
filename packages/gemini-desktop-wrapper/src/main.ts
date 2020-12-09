@@ -1,4 +1,4 @@
-import electron = require('electron');
+import * as electron from 'electron';
 import _ from 'lodash';
 // import GeminiApp from '@solsticeproject/gemini-react';
 
@@ -8,6 +8,7 @@ import Logger from '@solsticeproject/gemini-logging';
 
 const APP_NAME = 'Gemini Desktop';
 const APP_VERSION = '0.1';
+const app_module_package_name = '@solsticeproject/gemini-react-app'; // app to load into this context
 
 // the redux store is used at the electron level to orchestrate changes across contexts easier using redux state "magic"
 const { rootReducer } = GeminiRedux.reducers;
@@ -37,19 +38,32 @@ electron.app.on('ready', () => {
 
     electron.Menu.setApplicationMenu(menu)
 
-    win.on('ready-to-show', () => {
-        //GeminiApp.render(store);
-        document.addEventListener('DOMContentLoaded', () => {
-    
-            setTimeout(() => {
-                internals.onTick(_.cloneDeep(store.getState()), store);
-            }, 20); // ticker manages the app's queue
-        });
+    async function tryLoad(): Promise<any>{
+        Logger.debug('Attempting to load React app into electron context.');
+        Logger.debug('Mode: ', process.env.NODE_ENV || 'development');
+        try {
+            return win.loadURL(process.env.NODE_ENV === 'production' ?
+            `file:////${process.cwd()}/node_modules/${app_module_package_name}/dist/public/index.html`
+            : 'http://localhost:63777/index.html', {
+                extraHeaders: 'APP_CONTEXT=electron\n',
+            })
+        } catch (e: any) {
+            throw e;
+        }
+    }
 
-        win.loadURL(process.env.NODE_ENV === 'production' ?
-        'file:./node_modules/@solsticeproject/gemini-react/dist/public/index.html'
-        : 'http://localhost:63777', {
-            extraHeaders: 'APP_CONTEXT=electron\n',
-        }).catch((e: Error) => Logger.error(`Failed to load react app: ${e.message}`));
-    });
+    function recursiveTry() {
+        tryLoad()
+        .then(() => {
+            Logger.info('SUCCESS React app has been loaded into electron context.');
+        })
+        .catch(() => {
+            Logger.error('React app could not be loaded, trying in 5 seconds...');
+            setTimeout(() => {
+                recursiveTry();
+            });
+        }); // keep trying to load
+    }
+
+    recursiveTry();
 });

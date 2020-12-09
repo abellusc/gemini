@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@solsticeproject/gemini-logging": "file:../gemini-logging",
+    "@solsticeproject/gemini-react-app": "file:../gemini-react-app",
     "@solsticeproject/gemini-redux-utils": "file:../gemini-redux-utils",
     "lodash": "4.17.20",
     "react-redux": "7.2.2",
