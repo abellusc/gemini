@@ -21,7 +21,6 @@ electron.app.on('ready', () => {
         width: 800,
         height: 600,
         frame: !(process.env.NODE_ENV === 'production'),
-        transparent: (process.env.NODE_ENV === 'production'),
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
     });
 
@@ -42,9 +41,7 @@ electron.app.on('ready', () => {
         Logger.debug('Attempting to load React app into electron context.');
         Logger.debug('Mode: ', process.env.NODE_ENV || 'development');
         try {
-            return win.loadURL(process.env.NODE_ENV === 'production' ?
-            `file:////${process.cwd()}/node_modules/${app_module_package_name}/dist/public/index.html`
-            : 'http://localhost:63777/index.html', {
+            return win.loadURL('http://localhost:63777/index.html', {
                 extraHeaders: 'APP_CONTEXT=electron\n',
             })
         } catch (e: any) {
