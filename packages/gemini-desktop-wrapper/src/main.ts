@@ -21,18 +21,23 @@ electron.app.on('ready', () => {
         width: 800,
         height: 600,
         frame: !(process.env.NODE_ENV === 'production'),
+        transparent: true,
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
     });
 
-    const menu = new electron.Menu()
+    const menu = new electron.Menu();
     menu.append(new electron.MenuItem({
-    label: APP_NAME,
-    submenu: [{
-        label: 'Open Dev Tools',
-        role: 'help',
-        accelerator: process.platform === 'darwin' ? 'Alt+Cmd+I' : 'Alt+Shift+I',
-        click: () => { win.webContents.openDevTools(); }
-    }]
+    label: 'test',
+    submenu: [
+        {
+            label: 'Open Development Tools',
+            role: 'help',
+            accelerator: process.platform === 'darwin' ? 'Cmd+Shift+I' : 'Ctrl+Shift+I',
+            enabled: (process.env.NODE_ENV !== 'production'),
+            toolTip: 'Opens the CEF Debugging Panel. Only available in Developer Mode.',
+            click: () => { win.webContents.isDevToolsOpened() ? win.webContents.closeDevTools() : win.webContents.openDevTools(); }
+        }
+    ]
     }))
 
     electron.Menu.setApplicationMenu(menu)

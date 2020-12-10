@@ -14,7 +14,7 @@
     "clean": "npx rimraf dist",
     "compile": "tsc",
     "compile:dev": "tsc -w",
-    "precompile": "npm install"
+    "precompile": "npm install-clean"
   },
   "author": "Alexandra Belluscio <alexandra.belluscio@icloud.com>",
   "license": "MIT",

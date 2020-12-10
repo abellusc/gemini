@@ -1,0 +1,31 @@
+.App {
+  display: block;
+  position: relative;
+}
+.toolbar {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: -1px;
+  z-index: 5;
+}
+
+.controls {
+  position: absolute;
+  display: inline-block;
+  top: 5;
+  right: 5;
+  z-index: 10;
+}
+
+.toolbar-header {
+  background-image: linear-gradient(to bottom, #555555, #444444, #333333) !important;
+  border: none;
+
+  .title {
+    color: lightgrey !important;
+    font-weight: bold;
+  }
+}
