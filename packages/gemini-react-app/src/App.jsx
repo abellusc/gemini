@@ -6,7 +6,15 @@ import { faTimes as iconClose, faWindowMinimize as iconMinimize, faWindowMaximiz
 function App() {
   return (
     <div className="App window">
-
+      <div className="toolbar toolbar-header">
+        <div className="toolbar-actions">
+          <div className="btn-group">
+            <button className="btn btn-default">
+              <i className="icon icon-home"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
