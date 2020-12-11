@@ -15,14 +15,28 @@
 .controls {
   position: absolute;
   display: inline-block;
-  top: 5;
-  right: 5;
+  top: 5px;
+  right: 10px;
   z-index: 10;
+  width: 20%;
+  text-align: right;
+  color: #999;
+
+  .ctrlIcon {
+    margin-left: 8px;
+    font-size: 10px;
+
+    :nth-of-type(2) {
+      top: 2px;
+    }
+  }
 }
 
 .toolbar-header {
-  background-image: linear-gradient(to bottom, #555555, #444444, #333333) !important;
+  background-image: linear-gradient(to bottom, #333, #222, #111) !important;
   border: none;
+  text-align: center;
+  font-size: 6px;
 
   .title {
     color: lightgrey !important;
