@@ -20,8 +20,6 @@ electron.app.on('ready', () => {
     win = new electron.BrowserWindow({
         width: 800,
         height: 600,
-        frame: !(process.env.NODE_ENV === 'production'),
-        transparent: true,
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
     });
 

@@ -6,14 +6,7 @@ import { faTimes as iconClose, faWindowMinimize as iconMinimize, faWindowMaximiz
 function App() {
   return (
     <div className="App window">
-      <div className="controls">
-        <FontAwesomeIcon className="ctrlIcon" icon={iconClose} />
-        <FontAwesomeIcon className="ctrlIcon" icon={iconMinimize} />
-        <FontAwesomeIcon className="ctrlIcon" icon={iconMaximize} />
-      </div>
-      <div className="toolbar toolbar-header">
-        <h1 className="title">Gemini Desktop</h1>
-      </div>
+
     </div>
   );
 }
