@@ -1,5 +1,9 @@
 .module {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    border-radius: 25px;
+    display: inline-block;
+    width: auto;
 }
 .feature {
     padding: 15px;
@@ -26,4 +30,12 @@
 .Loading div {
     margin: 0 auto;
     width: 90%;
+}
+
+@media (prefers-color-scheme: dark) {
+    .module { background:  #555; color: white !important; }
+}
+
+@media (prefers-color-scheme: light) {
+    .module { background: #ccc; color:  #555 !important; }
 }
