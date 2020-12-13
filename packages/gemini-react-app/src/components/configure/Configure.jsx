@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as common from '../../common';
+import '../components.scss';
 
 class Configure extends React.Component {
     render() {
