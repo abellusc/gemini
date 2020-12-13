@@ -5,6 +5,7 @@ import App from './App';
 import ReduxUtils from '@solsticeproject/gemini-redux-utils';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter as Router } from 'react-router-dom';
 const { ipcRenderer } = window;
 
 console.log(window.ipcRenderer);
@@ -27,9 +28,11 @@ if (!ipcRenderer) { // TODO: this is where the web view would go, because it has
 
   ReactDOM.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Router>
     </React.StrictMode>,
     document.getElementById('root')
   );

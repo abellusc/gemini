@@ -2,6 +2,8 @@
   display: block;
   position: relative;
   font-family: photon-entypo;
+  background-color: inherit;
+  color: inherit;
 }
 .toolbar {
   display: inline-block;
@@ -23,4 +25,12 @@
 }
 .active {
   font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tab-item { background:  #333; color: white; }
+}
+
+@media (prefers-color-scheme: light) {
+  .tab-item { background: white; color:  #555; }
 }

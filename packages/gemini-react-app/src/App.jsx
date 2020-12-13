@@ -4,7 +4,13 @@ import './App.scss';
 // import { faTimes as iconClose, faWindowMinimize as iconMinimize, faWindowMaximize as iconMaximize } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import ReduxUtils from '@solsticeproject/gemini-redux-utils';
+import { Switch, Redirect, Route, Link } from 'react-router-dom';
+import * as common from './common';
+import Dashboard from './components/dashboard/Dashboard';
+import Configure from './components/configure/Configure';
+import Deploy from './components/deploy/Deploy';
+import Optimize from './components/optimize/Optimize';
+import Validate from './components/validate/Validate';
 
 class App extends React.Component {
   constructor() {
@@ -28,37 +34,28 @@ class App extends React.Component {
         <div className="tab-group">
           {this.props.state.app.features_available.map(featureName => (
             <>
-              <div className={classNames({
+              <Link to={`/${featureName.toLowerCase()}`} className={classNames({
                 'tab-item': true,
                 'active': (this.props.state.app.feature_tab === featureName.toLowerCase()),
               })} onClick={() => this.handleTabClick(featureName)}>
                 {featureName}
-              </div>
+              </Link>
             </>
           ))}
+        </div>
+        <div className="content">
+          <Switch>
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/configure" component={Configure} />
+            <Route path="/deploy" component={Deploy} />
+            <Route path="/optimize" component={Optimize} />
+            <Route path="/validate" component={Validate} />
+            <Redirect from="/**" to="/dashboard" />
+          </Switch>
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    ...ownProps,
-    state: {
-      ...state,
-    },
-  };
-}
-
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    ...ownProps,
-    dispatch,
-    actions: {
-      ...ReduxUtils.actions
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(common.mapStateToProps, common.mapDispatchToProps)(App);

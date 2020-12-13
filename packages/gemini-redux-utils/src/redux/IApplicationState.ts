@@ -28,6 +28,7 @@ export interface IApplicationConfig {
 export interface IApplicationAppState {
     features_available: string[];
     feature_tab: string;
+    current_url: string;
 }
 
 export enum SupportedFeature {

@@ -22,6 +22,7 @@ const initialState: IApplicationState = {
             'Optimize',
             'Validate'
         ],
+        current_url: '/dashboard'
     },
     sys: {
         platform: {
