@@ -9,7 +9,7 @@ class SystemInformation extends React.Component {
         console.log(this.props.state);
         return (
             <div className="SystemInformation module">
-                <div className="header"><FontAwesomeIcon icon={computerIcon} /> System Information</div>
+                <div className="header"><FontAwesomeIcon icon={computerIcon} style={{fontSize: '36px', verticalAlign: 'middle', lineHeight: '50px', marginRight: '20px'}} /> System Information</div>
                 <div className="contents">
                     <ul className="list">
                     <li>Platform: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.name : 'not reported by system'}</li>
