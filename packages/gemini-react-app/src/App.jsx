@@ -1,22 +1,56 @@
 import React from 'react';
 import './App.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes as iconClose, faWindowMinimize as iconMinimize, faWindowMaximize as iconMaximize } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faTimes as iconClose, faWindowMinimize as iconMinimize, faWindowMaximize as iconMaximize } from '@fortawesome/free-solid-svg-icons';
 
-function App() {
+import { connect } from 'react-redux';
+
+import classNames from 'classnames';
+
+import ReduxUtils from '@solsticeproject/gemini-redux-utils';
+
+function App(props) {
+  console.log(props.actions)
+  var userAgent = navigator.userAgent.toLowerCase();
+  if (!userAgent.includes('electron')) {
+    // Electron not found
+    return <div>You must run this application in an electron context.</div>;
+  }
   return (
     <div className="App window">
-      <div className="toolbar toolbar-header">
-        <div className="toolbar-actions">
-          <div className="btn-group">
-            <button className="btn btn-default">
-              <i className="icon icon-home"></i>
-            </button>
-          </div>
-        </div>
+      <div className="tab-group">
+        {props.state.app.features_available.map(featureName => (
+          <>
+            <div className={classNames({
+              'tab-item': true,
+              'active': props.state.app.feature_tab === featureName.toLowerCase(),
+            })} onClick={() => props.dispatch(props.actions.setFeatureTab(featureName.toLowerCase()))}>
+              {featureName}
+            </div>
+          </>
+        ))}
       </div>
     </div>
   );
 }
 
-export default App;
+function mapStateToProps(state, ownProps) {
+  return {
+    ...ownProps,
+    state: {
+      ...state,
+    },
+  };
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    ...ownProps,
+    dispatch,
+    actions: {
+      ...ReduxUtils.actions
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

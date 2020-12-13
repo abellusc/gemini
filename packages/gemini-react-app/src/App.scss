@@ -12,3 +12,15 @@
   margin: -1px;
   z-index: 5;
 }
+.tab-item {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: steelblue;
+}
+.tab-item::content {
+  opacity: 0.5;
+}
+.active {
+  font-weight: bold;
+}

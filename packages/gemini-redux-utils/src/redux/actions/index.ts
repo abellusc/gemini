@@ -1,5 +1,4 @@
 import { createAction } from 'redux-actions';
+import { IFSA } from '../IFSA';
 
-import * as test from './test';
-
-export const testAction = createAction('TEST_ACTION', test.testAction);
+export const setFeatureTab = createAction<IFSA>('SET_FEATURE_TAB');
