@@ -5,9 +5,11 @@ import { IFSA } from '../IFSA'
 export function setFeatureTab(currentFeatureName: string, featureName: string): string {
     console.log('Received feature tab update:', currentFeatureName, '=>', featureName);
     if (!!((SupportedFeature as any)[featureName])) {
-        return featureName;
+        console.error('unsupported feature:', featureName)
+        return currentFeatureName;
     }
-    return currentFeatureName;
+
+    return featureName;
 }
 
 export function hydrateFromSystem(sysInfo: any) {

@@ -9,7 +9,7 @@ const { ipcRenderer } = window;
 
 console.log(window.ipcRenderer);
 
-const store = ReduxUtils.storage.getConfiguredStore(ReduxUtils.reducers.rootReducer);
+const store = ReduxUtils.storage.getConfiguredStore();
 
 if (!ipcRenderer) { // TODO: this is where the web view would go, because it has to be a separate component set that uses remote calls to an agent
   ReactDOM.render(
