@@ -1,26 +1,49 @@
-import * as electron from 'electron';
+import electron = require('electron')
 import _ from 'lodash';
 // import GeminiApp from '@solsticeproject/gemini-react';
-
-import GeminiRedux from '@solsticeproject/gemini-redux-utils';
-import * as internals from './internals';
 import Logger from '@solsticeproject/gemini-logging';
+import sys from 'systeminformation';
+import path from 'path';
 
 const APP_NAME = 'Gemini Desktop';
 const APP_VERSION = '0.1';
 const app_module_package_name = '@solsticeproject/gemini-react-app'; // app to load into this context
 
-// the redux store is used at the electron level to orchestrate changes across contexts easier using redux state "magic"
-const { rootReducer } = GeminiRedux.reducers;
-const store = GeminiRedux.storage.getConfiguredStore(rootReducer);
-
 let win: electron.BrowserWindow;
 
-electron.app.on('ready', () => {
+async function populateSysInfo(): Promise<any> {
+    const os = await sys.osInfo();
+    const gpu = await sys.graphics();
+    const cpu = await sys.cpu();
+    const _sysinfo = {
+        platform: {
+            name: os.platform, // good to know for compatibility reasons and error reporting
+            version: os.release,
+        },
+        gpu: {
+            controllers: gpu.controllers,
+        }, // needs to know to send hardware info to the API to get capabilities back,
+        cpu: {
+            model: cpu.model,
+            cores: cpu.cores,
+            speed: cpu.speed,
+        }
+    };
+
+    return _sysinfo;
+}
+
+electron.app.on('ready', async () => {
+    const sysInfo = await populateSysInfo();
+
     win = new electron.BrowserWindow({
         width: 800,
         height: 600,
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
+        webPreferences: {
+            nodeIntegrationInWorker: true,
+            preload: path.join(__dirname, `preload.js`)
+        }
     });
 
     const menu = new electron.Menu();
@@ -46,6 +69,10 @@ electron.app.on('ready', () => {
         try {
             return win.loadURL('http://localhost:63777/index.html', {
                 extraHeaders: 'APP_CONTEXT=electron\n',
+            }).then(() => {
+                // send sysInfo over to react context so it recognizes it
+                // this also triggers the app to enter its loaded state
+                win.webContents.emit('redux_hydrate', sysInfo);
             })
         } catch (e: any) {
             throw e;

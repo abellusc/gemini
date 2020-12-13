@@ -1,4 +1,19 @@
-import { createAction } from 'redux-actions';
 import { IFSA } from '../IFSA';
 
-export const setFeatureTab = createAction<IFSA>('SET_FEATURE_TAB');
+export function hydrateFromSystem(sysInfo: any): IFSA {
+    return {
+        type: 'HYDRATE_FROM_SYSTEM',
+        payload: {
+            sysInfo,
+        }
+    };
+}
+
+export function setFeatureTab(featureTab: string): IFSA {
+    return {
+        type: 'SET_FEATURE_TAB',
+        payload: {
+            featureTab,
+        }
+    };
+}

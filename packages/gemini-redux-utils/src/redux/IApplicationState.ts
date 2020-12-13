@@ -1,6 +1,22 @@
 export interface IApplicationState {
-    config: IApplicationConfig;
+    _loaded: boolean;
     app: IApplicationAppState;
+    sys: ISystemInformation;
+}
+
+export interface ISystemInformation {
+    platform: {
+        name: string;
+        version: string;
+    },
+    gpu: {
+        controllers: any[];
+    },
+    cpu: {
+        model: string;
+        cores: number;
+        speed: string;
+    }
 }
 
 export interface IApplicationConfig {
