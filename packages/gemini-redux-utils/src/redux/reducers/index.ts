@@ -22,12 +22,13 @@ const initialState: IApplicationState = {
             'Optimize',
             'Validate'
         ],
-        current_url: '/dashboard'
+        current_url: '/dashboard',
+        errors: []
     },
     sys: null,
 };
 
-export function rootReducer(state: IApplicationState = initialState, action: IFSA): IApplicationState {
+export function rootReducer(state: IApplicationState = initialState, action: IFSA<any>): IApplicationState {
     const clone = _.cloneDeep(state);
     console.log(`Received action:`, action.type);
 
@@ -38,6 +39,13 @@ export function rootReducer(state: IApplicationState = initialState, action: IFS
             break;
         case 'SET_FEATURE_TAB':
             clone.app.feature_tab = features.setFeatureTab(state.app.feature_tab, action.payload.featureTab);
+            break;
+        case 'THROW_ERROR':
+            clone.app.errors = [
+                ...clone.app.errors,
+            ];
+
+            clone.app.errors.push(action.payload);
             break;
         default:
             console.error('unknown action - no handler found.');

@@ -38,7 +38,7 @@ async function getSystemInformation(): Promise<ISystemInformation> {
 electron.app.on('ready', async () => {
     let tmp: any = null;
 
-    electron.ipcMain.on('message', function(event, data){
+    electron.ipcMain.on('message', (event: any, data: any) => {
         switch (data) {
             case 'redux_hydrate': event.sender.send('hydrate', tmp); break;
         }
@@ -48,9 +48,10 @@ electron.app.on('ready', async () => {
         tmp = val;
     });
 
+    const gfx = (await sys.graphics());
     win = new electron.BrowserWindow({
-        width: 800,
-        height: 600,
+        width: Math.floor(gfx.displays[0].resolutionx / 2),
+        height: Math.floor(gfx.displays[0].resolutiony / 2),
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
         webPreferences: {
             nodeIntegrationInWorker: true,
@@ -58,10 +59,20 @@ electron.app.on('ready', async () => {
         }
     });
 
+    electron.app.setName(APP_NAME);
+
     const menu = new electron.Menu();
     menu.append(new electron.MenuItem({
     label: 'test',
     submenu: [
+        {
+            label: 'Reload Application',
+            role: 'reload',
+            accelerator: process.platform === 'darwin' ? 'Cmd+Shift+R' : 'Ctrl+Shift+R',
+            enabled: true,
+            toolTip: 'Reloads the internal React application.',
+            click: () => { win.webContents.reload(); }
+        },
         {
             label: 'Open Development Tools',
             role: 'help',
@@ -69,7 +80,7 @@ electron.app.on('ready', async () => {
             enabled: (process.env.NODE_ENV !== 'production'),
             toolTip: 'Opens the CEF Debugging Panel. Only available in Developer Mode.',
             click: () => { win.webContents.isDevToolsOpened() ? win.webContents.closeDevTools() : win.webContents.openDevTools(); }
-        }
+        },
     ]
     }))
 

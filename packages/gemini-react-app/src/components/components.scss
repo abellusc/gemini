@@ -2,11 +2,14 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     border-radius: 25px;
-    display: inline-block;
+    display: flexbox;
     width: auto;
+    box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.4);
+    max-width: 30%;
 }
 .feature {
     padding: 15px;
+    display: flex;
 }
 .contents {
     margin-left: 5px;
@@ -20,6 +23,7 @@
 }
 .Loading {
     position: fixed;
+    z-index: 100;
     margin: 0 auto;
     width: 90%;
     height: auto;
@@ -38,4 +42,64 @@
 
 @media (prefers-color-scheme: light) {
     .module { background: #ccc; color:  #555 !important; }
+}
+
+.Error {
+    display: inline-block;
+    background-color: rgba(255,255,255,0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    height: auto;
+    padding: 50px;
+    border-bottom: 2px inset black;
+
+    .header {
+        line-height: 36px;
+        vertical-align: middle;
+    }
+    span.icon {
+        font-weight: bold;
+        font-size: 36px;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    span:not(span.icon) {
+        font-weight: normal;
+        font-size: 24px;
+        vertical-align: middle;
+    }
+
+    .footer {
+        width: 90%;
+        margin: 0 auto;
+        display: flex;
+        font-weight: bold;
+    }
+    .btn {
+        color: #333;
+    }
+}
+
+.pull-right {
+    display: flexbox;
+    background-color: inherit;
+    margin: 0 auto;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.expandable-spoiler {
+    max-height: 0px;
+    animation: height 0.5s ease-in-out;
+}
+
+div.Splash {
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #555, #ccc);
+    animation: opacity 3s ease-in-out;
+    opacity: 1.0;
 }

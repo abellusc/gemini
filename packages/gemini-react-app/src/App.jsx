@@ -12,20 +12,40 @@ import Deploy from './components/deploy/Deploy';
 import Optimize from './components/optimize/Optimize';
 import Validate from './components/validate/Validate';
 import Loading from './components/loading/Loading';
+import SplashScreen from './components/splashscreen/SplashScreen';
 const { ipcRenderer } = window;
 
 class App extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.handleTabClick = this.handleTabClick.bind(this);
+    
+    this.state = {
+      initTime: Date.now(),
+      displayApp: false,
+    }
+  }
 
+  componentDidMount() {
+    console.log('props');
+    console.log(this.props);
+    setTimeout(() => this.hydrate({...this.props}), 10000);
+  }
+
+  hydrate(props) {
     // when the value changes (when the ipc channel sends this data from electron context)
     ipcRenderer.on('hydrate', (event, response) => {
       if (Object.keys(response).length > 0) {
-        props.dispatch(props.actions.hydrateFromSystem(response))
+        props.dispatch(props.actions.hydrateFromSystem(response));
       }
     });
     ipcRenderer.send('message', 'redux_hydrate');
+  }
+
+  displayApp() {
+    this.setState({
+      displayApp: true,
+    });
   }
 
   handleTabClick(featureName) {
@@ -44,6 +64,7 @@ class App extends React.Component {
         {
           this.props.state._loaded ? (
             <>
+              { this.state.displayApp ? <SplashScreen opacity={this.state.displayApp ? 0.0 : 1.0} /> : '' }
               <div className="tab-group">
                 {this.props.state.app.features_available.map(featureName => (
                   <>

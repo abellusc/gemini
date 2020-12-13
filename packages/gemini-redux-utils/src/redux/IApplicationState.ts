@@ -22,13 +22,19 @@ export interface ISystemInformation {
 export interface IApplicationConfig {
     working_directory: string,
     install_directory: string,
-    data_directory: string
+    data_directory: string,
+}
+
+export interface IError {
+    message: string;
+    code: number;
 }
 
 export interface IApplicationAppState {
     features_available: string[];
     feature_tab: string;
     current_url: string;
+    errors: IError[],
 }
 
 export enum SupportedFeature {

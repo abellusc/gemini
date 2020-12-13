@@ -1,10 +1,8 @@
 // Q: Why is this outside the React context?
 // A: Yes.
 
-export interface IFSA {
+export interface IFSA<T> {
     type: string,
-    payload: {
-        [key: string]: any;
-    },
+    payload: T | null,
     error?: boolean;
 }
