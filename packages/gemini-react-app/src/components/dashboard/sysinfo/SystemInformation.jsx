@@ -1,8 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop as computerIcon } from '@fortawesome/free-solid-svg-icons';
+import { connect } from 'react-redux';
+import * as common from '../../../common';
 
-export class SystemInformation extends React.Component {
+class SystemInformation extends React.Component {
     render() {
         console.log(this.props.state);
         return (
@@ -10,13 +12,19 @@ export class SystemInformation extends React.Component {
                 <div className="header"><FontAwesomeIcon icon={computerIcon} /> System Information</div>
                 <div className="contents">
                     <ul className="list">
-                    <li>Platform: {this.props.state.platform ? this.props.state.platform.name : 'unknown'}</li>
-                    <li>Release:</li>
-                    <li>CPU:</li>
-                    <li>GPU:</li>
+                    <li>Platform: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.name : 'not reported by system'}</li>
+                    <li>Release: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.version : 'not reported by system'}</li>
+                    <li>CPU: {!!this.props.state.sys && !!this.props.state.sys.cpu ? (
+                        <>
+                            {this.props.state.sys.cpu.model}, cores: {this.props.state.sys.cpu.cores} @ {this.props.state.sys.cpu.speed} GHz
+                        </>
+                     ) : 'not reported by system'}</li>
+                    <li>GPU: TBD</li>
                     </ul>
                 </div>
             </div>
         );
     }
 }
+
+export default connect(common.mapStateToProps, common.mapDispatchToProps)(SystemInformation);

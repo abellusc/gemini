@@ -2,8 +2,9 @@ import electron = require('electron')
 import _ from 'lodash';
 // import GeminiApp from '@solsticeproject/gemini-react';
 import Logger from '@solsticeproject/gemini-logging';
-import sys from 'systeminformation';
 import path from 'path';
+import { ISystemInformation } from '@solsticeproject/gemini-redux-utils/dist/redux/IApplicationState';
+import sys from 'systeminformation';
 
 const APP_NAME = 'Gemini Desktop';
 const APP_VERSION = '0.1';
@@ -11,11 +12,14 @@ const app_module_package_name = '@solsticeproject/gemini-react-app'; // app to l
 
 let win: electron.BrowserWindow;
 
-async function populateSysInfo(): Promise<any> {
-    const os = await sys.osInfo();
-    const gpu = await sys.graphics();
-    const cpu = await sys.cpu();
-    const _sysinfo = {
+async function getSystemInformation(): Promise<ISystemInformation> {
+    const [ os, gpu, cpu ] = await Promise.all([
+        sys.osInfo(),
+        sys.graphics(),
+        sys.cpu()
+    ]);
+
+    return {
         platform: {
             name: os.platform, // good to know for compatibility reasons and error reporting
             version: os.release,
@@ -24,17 +28,25 @@ async function populateSysInfo(): Promise<any> {
             controllers: gpu.controllers,
         }, // needs to know to send hardware info to the API to get capabilities back,
         cpu: {
-            model: cpu.model,
-            cores: cpu.cores,
-            speed: cpu.speed,
+            model: `${cpu.vendor}/${cpu.brand}`, // maybe use this to populate a branding photo for the brand of the CPU?
+            cores: cpu.cores, // needed for calculating capabilities
+            speed: cpu.speed, // needed for calculating capabilities
         }
     };
-
-    return _sysinfo;
 }
 
 electron.app.on('ready', async () => {
-    const sysInfo = await populateSysInfo();
+    let tmp: any = null;
+
+    electron.ipcMain.on('message', function(event, data){
+        switch (data) {
+            case 'redux_hydrate': event.sender.send('hydrate', tmp); break;
+        }
+    });
+
+    await getSystemInformation().then((val) => {
+        tmp = val;
+    });
 
     win = new electron.BrowserWindow({
         width: 800,
@@ -42,7 +54,7 @@ electron.app.on('ready', async () => {
         title: `${APP_NAME} v${APP_VERSION}${process.env.NODE_ENV !== 'production' ? ' [Development Mode]' : ''}`,
         webPreferences: {
             nodeIntegrationInWorker: true,
-            preload: path.join(__dirname, `preload.js`)
+            preload: path.join(__dirname, `preload`)
         }
     });
 
@@ -69,10 +81,6 @@ electron.app.on('ready', async () => {
         try {
             return win.loadURL('http://localhost:63777/index.html', {
                 extraHeaders: 'APP_CONTEXT=electron\n',
-            }).then(() => {
-                // send sysInfo over to react context so it recognizes it
-                // this also triggers the app to enter its loaded state
-                win.webContents.emit('redux_hydrate', sysInfo);
             })
         } catch (e: any) {
             throw e;

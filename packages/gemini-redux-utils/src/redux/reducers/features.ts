@@ -11,8 +11,3 @@ export function setFeatureTab(currentFeatureName: string, featureName: string): 
 
     return featureName;
 }
-
-export function hydrateFromSystem(sysInfo: any) {
-    console.log('Received hydration from electron via IPC');
-    return sysInfo;
-}

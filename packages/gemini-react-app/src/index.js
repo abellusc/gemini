@@ -22,10 +22,6 @@ if (!ipcRenderer) { // TODO: this is where the web view would go, because it has
     document.getElementById('root')
   );
 } else {
-  ipcRenderer.once('redux_hydrate', (sysInfo) => {
-    store.dispatch(ReduxUtils.actions.hydrateFromSystem(sysInfo));
-  })
-
   ReactDOM.render(
     <React.StrictMode>
       <Router>

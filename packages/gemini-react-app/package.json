@@ -18,11 +18,13 @@
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-loader-spinner": "^3.1.14",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "redux-reducers": "^0.3.0",
-    "redux-toolkit": "^1.1.2"
+    "redux-toolkit": "^1.1.2",
+    "rxjs": "^6.6.3"
   },
   "scripts": {
     "start": "PORT=63777 react-scripts start",

@@ -11,11 +11,21 @@ import Configure from './components/configure/Configure';
 import Deploy from './components/deploy/Deploy';
 import Optimize from './components/optimize/Optimize';
 import Validate from './components/validate/Validate';
+import Loading from './components/loading/Loading';
+const { ipcRenderer } = window;
 
 class App extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.handleTabClick = this.handleTabClick.bind(this);
+
+    // when the value changes (when the ipc channel sends this data from electron context)
+    ipcRenderer.on('hydrate', (event, response) => {
+      if (Object.keys(response).length > 0) {
+        props.dispatch(props.actions.hydrateFromSystem(response))
+      }
+    });
+    ipcRenderer.send('message', 'redux_hydrate');
   }
 
   handleTabClick(featureName) {
@@ -23,7 +33,7 @@ class App extends React.Component {
     this.setState({});
   }
   render() {
-    console.log(this.props.actions)
+    console.log(this.props.state)
     var userAgent = navigator.userAgent.toLowerCase();
     if (!userAgent.includes('electron')) {
       // Electron not found
@@ -31,28 +41,37 @@ class App extends React.Component {
     }
     return (
       <div className="App window">
-        <div className="tab-group">
-          {this.props.state.app.features_available.map(featureName => (
+        {
+          this.props.state._loaded ? (
             <>
-              <Link to={`/${featureName.toLowerCase()}`} className={classNames({
-                'tab-item': true,
-                'active': (this.props.state.app.feature_tab === featureName.toLowerCase()),
-              })} onClick={() => this.handleTabClick(featureName)}>
-                {featureName}
-              </Link>
+              <div className="tab-group">
+                {this.props.state.app.features_available.map(featureName => (
+                  <>
+                    <Link to={`/${featureName.toLowerCase()}`} className={classNames({
+                      'tab-item': true,
+                      'active': (this.props.state.app.feature_tab === featureName.toLowerCase()),
+                    })} onClick={() => this.handleTabClick(featureName)}>
+                      {featureName}
+                    </Link>
+                  </>
+                ))}
+              </div>
+              <div className="content">
+                <Switch>
+                  <Route path="/dashboard" component={Dashboard} />
+                  <Route path="/configure" component={Configure} />
+                  <Route path="/deploy" component={Deploy} />
+                  <Route path="/optimize" component={Optimize} />
+                  <Route path="/validate" component={Validate} />
+                  <Redirect from="/**" to="/dashboard" />
+                </Switch>
+              </div>
             </>
-          ))}
-        </div>
-        <div className="content">
-          <Switch>
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/configure" component={Configure} />
-            <Route path="/deploy" component={Deploy} />
-            <Route path="/optimize" component={Optimize} />
-            <Route path="/validate" component={Validate} />
-            <Redirect from="/**" to="/dashboard" />
-          </Switch>
-        </div>
+          ) : (
+            <>
+              <Loading />
+            </>
+          )}
       </div>
     );
   }

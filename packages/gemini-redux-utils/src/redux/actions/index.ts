@@ -4,7 +4,7 @@ export function hydrateFromSystem(sysInfo: any): IFSA {
     return {
         type: 'HYDRATE_FROM_SYSTEM',
         payload: {
-            sysInfo,
+            sysInfo
         }
     };
 }

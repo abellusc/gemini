@@ -24,29 +24,17 @@ const initialState: IApplicationState = {
         ],
         current_url: '/dashboard'
     },
-    sys: {
-        platform: {
-            name: '',
-            version: ''
-        },
-        gpu: {
-            controllers: [],
-        },
-        cpu: {
-            model: '',
-            cores: 0,
-            speed: ''
-        }
-    }
+    sys: null,
 };
 
-export function rootReducer(state: IApplicationState = initialState, action: IFSA) {
+export function rootReducer(state: IApplicationState = initialState, action: IFSA): IApplicationState {
     const clone = _.cloneDeep(state);
     console.log(`Received action:`, action.type);
 
     switch(action.type) {
         case 'HYDRATE_FROM_SYSTEM':
-            clone.sys = features.hydrateFromSystem(action.payload.sysInfo);
+            clone.sys = action.payload.sysInfo;
+            clone._loaded = true;
             break;
         case 'SET_FEATURE_TAB':
             clone.app.feature_tab = features.setFeatureTab(state.app.feature_tab, action.payload.featureTab);

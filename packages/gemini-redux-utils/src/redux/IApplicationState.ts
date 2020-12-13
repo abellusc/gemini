@@ -1,7 +1,7 @@
 export interface IApplicationState {
     _loaded: boolean;
     app: IApplicationAppState;
-    sys: ISystemInformation;
+    sys: ISystemInformation | null;
 }
 
 export interface ISystemInformation {
