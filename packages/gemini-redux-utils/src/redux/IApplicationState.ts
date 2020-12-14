@@ -35,6 +35,13 @@ export interface IApplicationAppState {
     feature_tab: string;
     current_url: string;
     errors: IError[],
+    sys_info: {
+        cpu: {
+            temp: any;
+            load: any;
+            load_history: number[];
+        }
+    };
 }
 
 export enum SupportedFeature {

@@ -1,0 +1,71 @@
+.Loading {
+    opacity: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 36px;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background-color: #555;
+
+    .app-title {
+        margin-top: 25%;
+        color: #000;
+        font-size: 36px;
+        vertical-align: middle;
+        animation: glow 6s infinite ease-in-out;
+        font-family: Questrial;
+        letter-spacing: 2px;
+    }
+
+    .app-subtitle {
+        font-size: 18px;
+        vertical-align: middle;
+    }
+
+    .app-copyright {
+        text-transform: uppercase;
+        font-variant: small-caps;
+        font-weight: lighter;
+        letter-spacing: 2px;
+        font-size: 0.7em;
+    }
+
+    @keyframes glow {
+        0% {
+            color: #000;
+        }
+        25% {
+            color: transparent;
+        }
+        50% {
+            color: #fff;
+        }
+        75% {
+            color: transparent;
+        }
+        100% {
+            color: #000;
+        }
+    }
+
+    @keyframes backgroundGlow {
+        0% {
+            background-color: #555;
+        }
+        50% {
+            background-color: #ccc;
+        }
+        100% {
+            background-color: #555;
+        }
+    }
+
+    animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
+    -moz-animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
+    -webkit-animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
+}

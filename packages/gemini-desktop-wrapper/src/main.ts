@@ -37,12 +37,25 @@ async function getSystemInformation(): Promise<ISystemInformation> {
 
 electron.app.on('ready', async () => {
     let tmp: any = null;
+    let systemStatus: any = {};
 
     electron.ipcMain.on('message', (event: any, data: any) => {
         switch (data) {
             case 'redux_hydrate': event.sender.send('hydrate', tmp); break;
+            case 'get_system_status': event.sender.send('system_status', systemStatus); break;
         }
     });
+
+    setInterval(async () => {
+        const cpu_temp = await sys.cpuTemperature();
+        const cpu_load = await sys.currentLoad();
+        systemStatus = {
+            cpu: {
+                temp: cpu_temp,
+                load: cpu_load,
+            },
+        }
+    }, 250);
 
     await getSystemInformation().then((val) => {
         tmp = val;

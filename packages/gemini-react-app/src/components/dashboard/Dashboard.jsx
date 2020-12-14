@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as common from '../../common';
 import '../components.scss';
 import ErrorMessage from '../error/ErrorMessage';
+import Monitor from './monitor/Monitor';
 import SystemInformation from './sysinfo/SystemInformation';
 
 class Dashboard extends React.Component {
@@ -24,7 +25,10 @@ class Dashboard extends React.Component {
             </>
             ) : '' }
             <div className="Dashboard feature">
-                <SystemInformation />
+                <div className="container">
+                    <SystemInformation />
+                    <Monitor />
+                </div>
             </div>
             </>
         )

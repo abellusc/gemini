@@ -13,9 +13,12 @@ import Optimize from './components/optimize/Optimize';
 import Validate from './components/validate/Validate';
 import Loading from './components/loading/Loading';
 import SplashScreen from './components/splashscreen/SplashScreen';
+import { of } from 'rxjs';
 const { ipcRenderer } = window;
 
 class App extends React.Component {
+  loadingElement;
+  
   constructor() {
     super();
     this.handleTabClick = this.handleTabClick.bind(this);
@@ -24,12 +27,23 @@ class App extends React.Component {
       initTime: Date.now(),
       displayApp: false,
     }
+
+    document.addEventListener('load', () => {
+      this.loadingElement = document.getElementById('loading_splash');
+      const opacity$ = of(this.loadingElement.style.opacity);
+
+      opacity$.subscribe(value => {
+        if (parseFloat(value) <= 0.0) {
+          this.loadingElement.style.display = 'none';
+        }
+      })
+    });
   }
 
   componentDidMount() {
     console.log('props');
     console.log(this.props);
-    setTimeout(() => this.hydrate({...this.props}), 10000);
+    setTimeout(() => this.hydrate({...this.props}), 3000);
   }
 
   hydrate(props) {
@@ -37,9 +51,15 @@ class App extends React.Component {
     ipcRenderer.on('hydrate', (event, response) => {
       if (Object.keys(response).length > 0) {
         props.dispatch(props.actions.hydrateFromSystem(response));
+        ipcRenderer.send('message', 'get_system_status');
       }
     });
-    ipcRenderer.send('message', 'redux_hydrate');
+    ipcRenderer.on('system_status', (event, response) => {
+      props.dispatch(props.actions.setSystemStatus(response));
+    })
+    setInterval(() => {
+      ipcRenderer.send('message', 'redux_hydrate')
+    }, 1000);
   }
 
   displayApp() {
@@ -62,37 +82,32 @@ class App extends React.Component {
     return (
       <div className="App window">
         {
-          this.props.state._loaded ? (
-            <>
-              { this.state.displayApp ? <SplashScreen opacity={this.state.displayApp ? 0.0 : 1.0} /> : '' }
-              <div className="tab-group">
-                {this.props.state.app.features_available.map(featureName => (
-                  <>
-                    <Link to={`/${featureName.toLowerCase()}`} className={classNames({
-                      'tab-item': true,
-                      'active': (this.props.state.app.feature_tab === featureName.toLowerCase()),
-                    })} onClick={() => this.handleTabClick(featureName)}>
-                      {featureName}
-                    </Link>
-                  </>
-                ))}
-              </div>
-              <div className="content">
-                <Switch>
-                  <Route path="/dashboard" component={Dashboard} />
-                  <Route path="/configure" component={Configure} />
-                  <Route path="/deploy" component={Deploy} />
-                  <Route path="/optimize" component={Optimize} />
-                  <Route path="/validate" component={Validate} />
-                  <Redirect from="/**" to="/dashboard" />
-                </Switch>
-              </div>
-            </>
-          ) : (
-            <>
-              <Loading />
-            </>
-          )}
+          <>
+            <Loading opacity={this.state.displayApp ? '0%' : '100%'} id="loading_splash" />
+            <div className="tab-group">
+              {this.props.state.app.features_available.map(featureName => (
+                <>
+                  <Link to={`/${featureName.toLowerCase()}`} className={classNames({
+                    'tab-item': true,
+                    'active': (this.props.state.app.feature_tab === featureName.toLowerCase()),
+                  })} onClick={() => this.handleTabClick(featureName)}>
+                    {featureName}
+                  </Link>
+                </>
+              ))}
+            </div>
+            <div className="content">
+              <Switch>
+                <Route path="/dashboard" component={Dashboard} />
+                <Route path="/configure" component={Configure} />
+                <Route path="/deploy" component={Deploy} />
+                <Route path="/optimize" component={Optimize} />
+                <Route path="/validate" component={Validate} />
+                <Redirect from="/**" to="/dashboard" />
+              </Switch>
+            </div>
+          </>
+        }
       </div>
     );
   }

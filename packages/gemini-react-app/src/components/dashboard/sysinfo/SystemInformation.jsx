@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop as computerIcon } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import * as common from '../../../common';
+import Loader from 'react-loader-spinner'
 
 class SystemInformation extends React.Component {
     constructor() {
@@ -40,7 +41,12 @@ class SystemInformation extends React.Component {
                     <button className="btn btn-secondary" onClick={() => this.toggleAdvancedData()}>{this.state.advanced_system_info_expanded ? 'Hide' : 'Show'} Advanced</button>
                     </div>
                     <div className="expandable-spoiler" id="spoiler1" style={{ display: (this.state.advanced_system_info_expanded ? 'inline-block' : 'none')}}>
-                    Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here Advanced Info Here 
+                        { this.props.state.app.sys_info && this.props.state.app.sys_info.cpu ? (
+                        <ul>
+                        <li>CPU Temperature: {this.props.state.app.sys_info.cpu.temp.main}</li>
+                        <li>CPU Load: {parseFloat(this.props.state.app.sys_info.cpu.load.currentload, 10).toFixed(2)}%</li>
+                        </ul>
+                        ) : <Loader type="Grid" width={10} height={10} />}
                     </div>
                 </div>
             </div>

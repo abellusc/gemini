@@ -11,6 +11,9 @@ import * as util from '../util';
 
 import * as actions from '../actions';
 
+const startArr: number[] = [];
+startArr.fill(0.0,0,0)
+
 const initialState: IApplicationState = {
     _loaded: false,
     app: {
@@ -23,7 +26,18 @@ const initialState: IApplicationState = {
             'Validate'
         ],
         current_url: '/dashboard',
-        errors: []
+        errors: [],
+        sys_info: {
+            cpu: {
+                temp: {
+                    main: 0
+                },
+                load: {
+                    currentload: 0.00,
+                },
+                load_history: startArr,
+            }
+        }
     },
     sys: null,
 };
@@ -46,6 +60,14 @@ export function rootReducer(state: IApplicationState = initialState, action: IFS
             ];
 
             clone.app.errors.push(action.payload);
+            break;
+        case 'SET_SYSTEM_STATUS':
+            if (action.payload.temp)
+                clone.app.sys_info.cpu.temp = action.payload.temp;
+            if (action.payload.load) {
+                clone.app.sys_info.cpu.load = action.payload.load;
+                clone.app.sys_info.cpu.load_history.unshift(parseFloat(parseFloat(action.payload.load.currentload).toFixed(2)));
+            }
             break;
         default:
             console.error('unknown action - no handler found.');

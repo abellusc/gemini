@@ -103,3 +103,9 @@ div.Splash {
     animation: opacity 3s ease-in-out;
     opacity: 1.0;
 }
+
+.container {
+    display: flexbox;
+    flex: flex-start;
+    width: 100%;
+}
