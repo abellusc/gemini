@@ -5,19 +5,20 @@
     vertical-align: middle;
     line-height: 36px;
     position: fixed;
+    z-index: 10;
     width: 100%;
     height: 100%;
     overflow: hidden;
     top: 0;
     left: 0;
     background-color: #555;
+    transition: opacity 1s ease-in-out;
 
     .app-title {
         margin-top: 25%;
         color: #000;
         font-size: 36px;
         vertical-align: middle;
-        animation: glow 6s infinite ease-in-out;
         font-family: Questrial;
         letter-spacing: 2px;
     }
@@ -34,6 +35,15 @@
         letter-spacing: 2px;
         font-size: 0.7em;
     }
+
+    .app-spinner {
+        width: 100px;
+        padding: 0;
+        margin: 0 auto;
+        border: 0;
+        display: inline-block;
+    }
+
 
     @keyframes glow {
         0% {
@@ -55,17 +65,33 @@
 
     @keyframes backgroundGlow {
         0% {
-            background-color: #555;
+            background-color: rgb(125,125,125);
         }
         50% {
-            background-color: #ccc;
+            background-color: rgb(125,125,125);
         }
         100% {
-            background-color: #555;
+            background-color: rgb(125,125,125);
         }
     }
 
-    animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
-    -moz-animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
-    -webkit-animation: backgroundGlow 5s infinite ease-in-out, opacity 5s ease-in-out;
+}
+.faded {
+    opacity: 0% !important;
+}
+
+#spinner {
+    transition: rotate 1s linear;
+    transform-origin: 50% 50%;
+    width: 100%;
+    font-size: 36px;
+}
+
+.spinning {
+    animation: spin infinite ease-in-out !important;
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }
