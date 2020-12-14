@@ -6,14 +6,18 @@ import './Loading.scss';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Particles from 'react-particles-js';
 
 class Loading extends React.Component {
+    loadingSplash;
+    rotator;
     constructor() {
         super();
         this.state = {
             start_time: Date.now(),
             done: false,
             rotationalDegrees: 0,
+            _destroy: false,
         }
 
         let i = 0;
@@ -23,6 +27,11 @@ class Loading extends React.Component {
                 this.setState({
                     done: true
                 });
+                setTimeout(() => {
+                    this.setState({
+                        _destroy: true,
+                    })
+                }, 3000);
             } else {
                 this.setState({});
             }
@@ -35,14 +44,19 @@ class Loading extends React.Component {
         }, 1);
     }
     componentWillUnmount() {
-
+        clearInterval(this.rotator);
+    }
+    componentDidMount() {
+        this.loadingSplash = document.getElementById('_loading');
     }
     render() {
         return (
+            <>
             <div className={classnames({
                 'Loading': true,
                 'faded': this.state.done,
-            })}>
+                'destroyed': this.loadingSplash && this.state._destroy,
+            })} id="_loading">
                 <div className="app-title">gemini</div>
                 <div className="app-subtitle">decentralized artificial intelligence</div>
                 <div className="app-copyright">&copy; 2020 Solstice Project - github.com/solsticeproject</div>
@@ -51,8 +65,10 @@ class Loading extends React.Component {
                         spinning: true,
                     })} id="spinner" style={{transform: `rotate(${(this.state.rotationalDegrees % 360)}deg)`}} />
                 </div>
+                <Particles className="particles" />
             </div>
-        )
+            </>
+        );
     }
 }
 
