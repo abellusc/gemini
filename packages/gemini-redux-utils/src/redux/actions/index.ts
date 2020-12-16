@@ -30,9 +30,10 @@ export function throwError(code: number, message: string): IFSA<IError> {
     }
 }
 
-export function setSystemStatus(status: any): IFSA<{ cpu: any }> {
+export type IStatus = { temp: any, load: any, loadhistory: any[] };
+export function setSystemStatus(status: IStatus): IFSA<IStatus> {
     return {
         type: 'SET_SYSTEM_STATUS',
-        payload: status || null,
+        payload: status || null
     }
 }

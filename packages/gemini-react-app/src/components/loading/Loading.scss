@@ -23,6 +23,13 @@
         font-family: Questrial;
         letter-spacing: 2px;
         z-index: 30;
+        font-weight: normal;
+        transition: color 1s ease-in-out, font-size 2s ease-in-out;
+    }
+
+    .done {
+        color: darkgreen !important;
+        font-size: 72px !important;
     }
 
     .app-subtitle {
@@ -68,6 +75,18 @@
         }
         100% {
             color: #000;
+        }
+    }
+
+    @keyframes boldify {
+        0% {
+            font-weight: lighter;
+        }
+        50% {
+            font-weight: bolder;
+        }
+        100% {
+            font-weight: lighter;
         }
     }
 

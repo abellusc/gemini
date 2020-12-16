@@ -51,12 +51,9 @@ class App extends React.Component {
     ipcRenderer.on('hydrate', (event, response) => {
       if (Object.keys(response).length > 0) {
         props.dispatch(props.actions.hydrateFromSystem(response));
-        ipcRenderer.send('message', 'get_system_status');
       }
     });
-    ipcRenderer.on('system_status', (event, response) => {
-      props.dispatch(props.actions.setSystemStatus(response));
-    })
+    
     setInterval(() => {
       ipcRenderer.send('message', 'redux_hydrate')
     }, 1000);

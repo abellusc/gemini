@@ -3,16 +3,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop as computerIcon } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import * as common from '../../../common';
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
+
+const { ipcRenderer } = window;
 
 class SystemInformation extends React.Component {
-    constructor() {
+    _waiting = false;
+    constructor(props) {
         super();
         this.state = {
             advanced_system_info_expanded: false,
         };
 
         this.toggleAdvancedData = this.toggleAdvancedData.bind(this);
+
+        ipcRenderer.on('system_status', (event, response) => {
+            props.dispatch(props.actions.setSystemStatus({ temp: response.cpu.temp, load: response.cpu.load }));
+            this._waiting = false;
+        });
+
+        setInterval(() => {
+            if (!this._waiting) {
+                this._waiting = true;
+                ipcRenderer.send('message', 'get_system_status');
+            }
+        }, 500);
     }
 
     toggleAdvancedData() {

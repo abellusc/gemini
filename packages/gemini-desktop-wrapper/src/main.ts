@@ -55,7 +55,7 @@ electron.app.on('ready', async () => {
                 load: cpu_load,
             },
         }
-    }, 250);
+    }, 500);
 
     await getSystemInformation().then((val) => {
         tmp = val;

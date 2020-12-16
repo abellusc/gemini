@@ -30,17 +30,17 @@ const initialState: IApplicationState = {
         sys_info: {
             cpu: {
                 temp: {
-                    main: 0
+                    main: null
                 },
-                load: {
-                    currentload: 0.00,
-                },
-                load_history: startArr,
+                load: -1.00,
+                load_history: [],
             }
         }
     },
     sys: null,
 };
+
+const HISTORY_SIZE = 100;
 
 export function rootReducer(state: IApplicationState = initialState, action: IFSA<any>): IApplicationState {
     const clone = _.cloneDeep(state);
@@ -62,12 +62,12 @@ export function rootReducer(state: IApplicationState = initialState, action: IFS
             clone.app.errors.push(action.payload);
             break;
         case 'SET_SYSTEM_STATUS':
-            if (action.payload.temp)
-                clone.app.sys_info.cpu.temp = action.payload.temp;
-            if (action.payload.load) {
-                clone.app.sys_info.cpu.load = action.payload.load;
-                clone.app.sys_info.cpu.load_history.unshift(parseFloat(parseFloat(action.payload.load.currentload).toFixed(2)));
-            }
+            clone.app.sys_info.cpu.temp = action.payload.temp;
+            clone.app.sys_info.cpu.load = action.payload.load;
+            let history = _.cloneDeep(clone.app.sys_info.cpu.load_history);
+            history.unshift(parseFloat(parseFloat(action.payload.load.currentload).toFixed(2)));
+            history = history.slice(0, (HISTORY_SIZE - 1)); // constrain the history to this amount
+            clone.app.sys_info.cpu.load_history = history;
             break;
         default:
             console.error('unknown action - no handler found.');

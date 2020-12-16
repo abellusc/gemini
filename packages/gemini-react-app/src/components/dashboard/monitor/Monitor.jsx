@@ -25,20 +25,32 @@ class Monitor extends React.Component {
                 dataset: value,
             });
         })
+
+        this.tick = this.tick.bind(this);
+        this.getChartType = this.getChartType.bind(this);
     }
+
     tick() {
 
     }
+
+    getChartType(type) {
+        switch (type) {
+            case 'line': return RD3.createLineChart({
+                x_display_name: 'Time',
+                y_display_name: 'CPU',
+                width: this.props.width || 480,
+                height: this.props.height || 240,
+                dataset: this.state.dataset,
+            });
+            default: throw new TypeError(`Unable to render unknown chart type '${type}': invalid chart type specified.`);
+        }
+    }
+
     render() {
         return (
             <div className="Monitor">
-                {this.state.type !== 'unknown' ? RD3.createLineChart({
-                    x_display_name: 'Time',
-                    y_display_name: 'CPU',
-                    width: this.props.width || 480,
-                    height: this.props.height || 240,
-                    dataset: this.state.dataset,
-                }) : <Loader width={10} height={10} type="Grid" color="white" />}
+                {this.state.type !== 'unknown' ? getChartType(this.props.type) : ''}
             </div>
         )
     }

@@ -55,9 +55,13 @@ class Loading extends React.Component {
             <div className={classnames({
                 'Loading': true,
                 'faded': this.state.done,
+                'done': this.state.done,
                 'destroyed': this.loadingSplash && this.state._destroy,
             })} id="_loading">
-                <div className="app-title">gemini</div>
+                <div className={classnames({
+                    'app-title': true,
+                    'done': this.state.done,
+                })}>gemini</div>
                 <div className="app-subtitle">decentralized artificial intelligence</div>
                 <div className="app-copyright">&copy; 2020 Solstice Project - github.com/solsticeproject</div>
                 <div className="app-spinner">
