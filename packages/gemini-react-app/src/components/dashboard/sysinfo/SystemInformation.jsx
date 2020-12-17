@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop as computerIcon } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import * as common from '../../../common';
-import Loader from 'react-loader-spinner';
 
 const { ipcRenderer } = window;
 
@@ -37,17 +36,21 @@ class SystemInformation extends React.Component {
     }
 
     render() {
+        if (!this.props.state || this.props.state.app) {
+            return '';
+        }
+
         console.log(this.props.state);
         return (
             <div className="SystemInformation module">
                 <div className="header"><FontAwesomeIcon icon={computerIcon} style={{fontSize: '36px', verticalAlign: 'middle', lineHeight: '50px', marginRight: '20px'}} /> System Information</div>
                 <div className="contents">
                     <ul className="list">
-                    <li>Platform: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.name : 'not reported by system'}</li>
-                    <li>Release: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.version : 'not reported by system'}</li>
-                    <li>CPU: {!!this.props.state.sys && !!this.props.state.sys.cpu ? (
+                    <li>Platform: {!!this.props.state.app.common.sys && !!this.props.state.app.common.sys.platform ? this.props.state.app.common.sys.platform.name : 'not reported by system'}</li>
+                    <li>Release: {!!this.props.state.app.common.sys && !!this.props.state.app.common.sys.platform ? this.props.state.app.common.sys.platform.version : 'not reported by system'}</li>
+                    <li>CPU: {!!this.props.state.common.sys && !!this.props.state.common.sys.cpu ? (
                         <>
-                            {this.props.state.sys.cpu.model}, cores: {this.props.state.sys.cpu.cores} @ {this.props.state.sys.cpu.speed} GHz
+                            {this.props.state.common.sys.cpu.model}, cores: {this.props.state.app.common.sys.cpu.cores} @ {this.props.state.app.common.sys.cpu.speed} GHz
                         </>
                      ) : 'not reported by system'}</li>
                     <li>GPU: TBD</li>
@@ -58,4 +61,20 @@ class SystemInformation extends React.Component {
     }
 }
 
-export default connect(common.mapStateToProps, common.mapDispatchToProps)(SystemInformation);
+export default connect(((state, ownProps) => {
+    const adv = common.mapStateToProps(state, ownProps);
+
+    const {
+        state: {
+            app: {
+                sys_info,
+            }
+        },
+        self,
+    } = adv;
+
+    return {
+        state,
+        self
+    };
+}), common.mapDispatchToProps)(SystemInformation);

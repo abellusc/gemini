@@ -12,7 +12,6 @@ import Deploy from './components/deploy/Deploy';
 import Optimize from './components/optimize/Optimize';
 import Validate from './components/validate/Validate';
 import Loading from './components/loading/Loading';
-import SplashScreen from './components/splashscreen/SplashScreen';
 import { of } from 'rxjs';
 const { ipcRenderer } = window;
 
@@ -70,19 +69,19 @@ class App extends React.Component {
     this.setState({});
   }
   render() {
-    console.log(this.props.state)
     var userAgent = navigator.userAgent.toLowerCase();
     if (!userAgent.includes('electron')) {
       // Electron not found
       return <div>You must run this application in an electron context.</div>;
     }
+
     return (
       <div className="App window">
         {
           <>
             <Loading opacity={this.state.displayApp ? '0%' : '100%'} id="loading_splash" />
             <div className="tab-group">
-              {this.props.state.app.features_available.map(featureName => (
+              {this.props.state.app.common.features_available.map(featureName => (
                 <>
                   <Link to={`/${featureName.toLowerCase()}`} className={classNames({
                     'tab-item': true,
@@ -110,4 +109,18 @@ class App extends React.Component {
   }
 }
 
-export default connect(common.mapStateToProps, common.mapDispatchToProps)(App);
+export default connect(((state, ownProps) => {
+    const adv = common.mapStateToProps(state, ownProps);
+
+    const {
+        state: {
+            app
+        },
+        self,
+    } = adv;
+
+    return {
+        state,
+        self
+    };
+}), common.mapDispatchToProps)(App);

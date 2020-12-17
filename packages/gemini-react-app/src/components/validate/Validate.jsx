@@ -13,4 +13,18 @@ class Validate extends React.Component {
     }
 }
 
-export default connect(common.mapStateToProps, common.mapDispatchToProps)(Validate);
+export default connect(((state, ownProps) => {
+    const adv = common.mapStateToProps(state, ownProps);
+
+    const {
+        state: {
+            app
+        },
+        self,
+    } = adv;
+
+    return {
+        state,
+        self
+    };
+}), common.mapDispatchToProps)(Validate);

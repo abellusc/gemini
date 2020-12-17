@@ -8,14 +8,18 @@ import SystemInformation from './sysinfo/SystemInformation';
 
 class Dashboard extends React.Component {
     render() {
+        if (!this.props.state || !this.props.state.app) {
+            return JSON.stringify(this.props.state);
+        }
+
         return (
             <>
-            { this.props.state.app.errors.length > 0 ? (
+            { this.props.state.app.common.errors.length > 0 ? (
             <>
                 <ErrorMessage>
                     The following errors have been found.
                     <ul>
-                        { this.props.state.app.errors.map(err => (
+                        { this.props.state.app.common.errors.map(err => (
                             <>
                                 <li>({err.code}) {err.message}</li>
                             </>
@@ -35,4 +39,20 @@ class Dashboard extends React.Component {
     }
 }
 
-export default connect(common.mapStateToProps, common.mapDispatchToProps)(Dashboard);
+export default connect(((state, ownProps) => {
+    const adv = common.mapStateToProps(state, ownProps);
+
+    const {
+        state: {
+            app: {
+                common,
+            }
+        },
+        self,
+    } = adv;
+
+    return {
+        state,
+        self
+    };
+}), common.mapDispatchToProps)(Dashboard);

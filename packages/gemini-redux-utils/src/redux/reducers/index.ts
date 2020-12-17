@@ -3,13 +3,8 @@ import { IApplicationState } from 'src';
 import { SupportedFeature } from '../IApplicationState';
 import { IFSA } from '../IFSA';
 
-import { createReducer } from '@reduxjs/toolkit';
-
 import * as features from  './features';
 
-import * as util from '../util';
-
-import * as actions from '../actions';
 
 const startArr: number[] = [];
 startArr.fill(0.0,0,0)
@@ -17,16 +12,18 @@ startArr.fill(0.0,0,0)
 const initialState: IApplicationState = {
     _loaded: false,
     app: {
-        feature_tab: SupportedFeature.DEFAULT,
-        features_available: [
-            'Dashboard',
-            'Configure',
-            'Deploy',
-            'Optimize',
-            'Validate'
-        ],
-        current_url: '/dashboard',
-        errors: [],
+        common: {
+            feature_tab: SupportedFeature.DEFAULT,
+            features_available: [
+                'Dashboard',
+                'Configure',
+                'Deploy',
+                'Optimize',
+                'Validate'
+            ],
+            current_url: '/dashboard',
+            errors: [],
+        },
         sys_info: {
             cpu: {
                 temp: {
@@ -52,14 +49,11 @@ export function rootReducer(state: IApplicationState = initialState, action: IFS
             clone._loaded = true;
             break;
         case 'SET_FEATURE_TAB':
-            clone.app.feature_tab = features.setFeatureTab(state.app.feature_tab, action.payload.featureTab);
+            clone.app.common.feature_tab = features.setFeatureTab(state.app.common.feature_tab, action.payload.featureTab);
             break;
         case 'THROW_ERROR':
-            clone.app.errors = [
-                ...clone.app.errors,
-            ];
-
-            clone.app.errors.push(action.payload);
+            clone.app.common.errors = [ ...(clone.app.common.errors || []) ];
+            clone.app.common.errors.push(action.payload);
             break;
         case 'SET_SYSTEM_STATUS':
             clone.app.sys_info.cpu.temp = action.payload.temp;

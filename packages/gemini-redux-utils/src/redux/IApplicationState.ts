@@ -31,10 +31,12 @@ export interface IError {
 }
 
 export interface IApplicationAppState {
-    features_available: string[];
-    feature_tab: string;
-    current_url: string;
-    errors: IError[],
+    common: {
+        features_available: string[];
+        feature_tab: string;
+        current_url: string;
+        errors: IError[],
+    },
     sys_info: any;
 }
 
