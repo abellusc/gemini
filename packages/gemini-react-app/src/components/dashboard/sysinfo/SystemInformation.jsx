@@ -52,17 +52,6 @@ class SystemInformation extends React.Component {
                      ) : 'not reported by system'}</li>
                     <li>GPU: TBD</li>
                     </ul>
-                    <div className="expandable-spoiler-controls">
-                    <button className="btn btn-secondary" onClick={() => this.toggleAdvancedData()}>{this.state.advanced_system_info_expanded ? 'Hide' : 'Show'} Advanced</button>
-                    </div>
-                    <div className="expandable-spoiler" id="spoiler1" style={{ display: (this.state.advanced_system_info_expanded ? 'inline-block' : 'none')}}>
-                        { this.props.state.app.sys_info && this.props.state.app.sys_info.cpu ? (
-                        <ul>
-                        <li>CPU Temperature: {this.props.state.app.sys_info.cpu.temp.main}</li>
-                        <li>CPU Load: {parseFloat(this.props.state.app.sys_info.cpu.load.currentload, 10).toFixed(2)}%</li>
-                        </ul>
-                        ) : <Loader type="Grid" width={10} height={10} />}
-                    </div>
                 </div>
             </div>
         );

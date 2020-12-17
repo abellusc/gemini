@@ -27,7 +27,7 @@ class Dashboard extends React.Component {
             <div className="Dashboard feature">
                 <div className="container">
                     <SystemInformation />
-                    <Monitor />
+                    <Monitor type="line" />
                 </div>
             </div>
             </>

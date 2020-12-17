@@ -1,52 +1,33 @@
 import ReduxUtils from '@solsticeproject/gemini-redux-utils';
 import _ from 'lodash';
 
-export function deepFilter(state, slices = [], currentKeyPath = null) {
-    const obj = {};
-    let keyPath = `${currentKeyPath}.` || '';
+export function deepFilterAssoc(baseObject, slices = [], currentKeyPath = null) {
+    let obj = {};
+    const sortedSliceArray = slices.sort((a, b) => (b - a));
+    // console.log('slices to include:');
+    // console.log(sortedSliceArray);
 
-    if (!Array.isArray(slices)) {
-        throw new TypeError('slices must be an array of slices to select');
-    }
-
-    for (const key in obj) {
-        let isValue = null;
-
-        keyPath += key;
-        if (typeof obj[key] === 'object') {
-            if (Array.isArray(obj[key])) {
-                // is an array - treat as a value
-                isValue = true;
-            } else {
-                // not an array - recursive deep slice
-                isValue = false;
+    const baseKeyPath = currentKeyPath || 'base';
+    
+    for (const k in baseObject) {
+        // console.log(`processing -> ${k}`);
+        const keyPath = baseKeyPath === 'base' ? k : `${baseKeyPath}.${k}`;
+        // console.log(`key path: ${keyPath}`);
+        if (typeof baseObject[k] === 'object') {
+            // console.log('is object - recursive call');
+            if (sortedSliceArray.includes(keyPath)) {
+                obj = deepFilter(baseObject[k], slices, keyPath);
             }
         } else {
-            // treat as value
-            isValue = true;
-        }
-
-        const resolvers = [];
-        if (isValue !== null) {
-            if (isValue) {
-                if (slices.includes(keyPath)) {
-                    resolvers.push(deepFind(state, keyPath));
-                }
-            } else {
-                Object.keys(state[key]).map((val, key) => slices.includes(`${keyPath}.${key}`) ? ({ ...val[keyPath.split('.').slice(1).join('.')] }) : undefined);
+            // console.log('is normal value - check')
+            if (sortedSliceArray.includes(keyPath)) {
+                // console.log(`found item in list: ${o}`);
+                obj = baseObject[k];
             }
         }
     }
 
-    return obj;
-}
-
-export function deepFind(state, findPath) {
-    const split = findPath.split('.');
-    let obj = null;
-    for (const layer of split) {
-        obj = _.cloneDeep(obj ? obj[layer] : state[layer]);
-    }
+    console.log(obj);
 
     return obj;
 }
