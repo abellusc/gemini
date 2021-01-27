@@ -24,8 +24,8 @@ class ErrorMessage extends React.Component {
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../common').mapStateToProps(currentState, ownProps);
 
     const {
         state: {
@@ -38,4 +38,4 @@ export default connect(((state, ownProps) => {
         state,
         self
     };
-}), common.mapDispatchToProps)(ErrorMessage);
+}, common.mapDispatchToProps)(ErrorMessage);

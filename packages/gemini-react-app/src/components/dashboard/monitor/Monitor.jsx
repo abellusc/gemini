@@ -1,45 +1,45 @@
 import React from 'react';
-import RD3 from 'react-d3-library';
+import * as RD3 from 'react-d3-library';
 import * as common from '../../../common';
 import './Monitor.scss';
 import { connect } from 'react-redux';
+import { ValueBar } from './bar/ValueBar';
 
 class Monitor extends React.Component {
     constructor(props) {
         super();
         this.state = {
             type: props.type || 'unknown',
-            dataset: this.props.self.dataset || []
+            dataset: props.self.dataset || []
         };
 
-        setInterval(() => {
-            this.tick();
-        }, this.props.self.interval || 5000);
-
-        if (!props.self['onUpdateTick'] || typeof props.self['onUpdateTick'] !== 'function') {
-            throw new Error('onUpdateTick must be a well-defined async function of how to retrieve the data each tick');
-        }
-
-        if (!props.self['onInit'] || typeof props.self['onInit'] !== 'function') {
-            throw new Error('onInit must be a well-defined async funcntion of how to retrieve initial chart data.');
+        if (!props.self['data_source'] || typeof props.self['data_source'] !== 'function') {
+            throw new Error('data_source must be a well-defined async function of how to retrieve the data each tick');
         }
 
         this.tick = this.tick.bind(this);
         this.getChartType = this.getChartType.bind(this);
-        this.props.self['onUpdateTick'] = this.props.self['onUpdateTick'].bind(this);
-        this.props.self['onInit'] = this.props.self['onInit'].bind(this);
+        props.self['data_source'] = props.self['data_source'].bind(this);
+
+        this.props = props;
+
+        setInterval(() => {
+            this.tick(this.props);
+        }, props.self.interval || 5000);
     }
 
     tick(props) {
-        props.self['onUpdateTick']().then((result) => {
-            // set the new value of the data set via redux
-        });
-    }
-
-    componentDidMount() {
-        this.props.self['onInit']().then((result) => {
-            // set the initial value of the data set via redux
-        });
+        new Promise((resolve, reject) => {
+            if (typeof props.self['data_source'] !== 'function')
+                return reject(new Error('fn not defined'));
+            return resolve(() => props.self['data_source']);
+        })
+        .then((dataResponse) => {
+            // apply the response to the data via redux
+        })
+        .catch((e) => {
+            console.error('error while retrieving monitor data from data source');
+        })
     }
 
     getChartType(type) {
@@ -59,8 +59,7 @@ class Monitor extends React.Component {
                         ...this.props.chartOptions,
                     };
                 }
-
-                return RD3.createLineChart(opts);
+                return '';
             default: throw new TypeError(`Unable to render unknown chart type '${type}': invalid chart type specified.`);
         }
     }
@@ -71,27 +70,39 @@ class Monitor extends React.Component {
         }
         return (
             <div className="Monitor">
-                {this.state.type !== 'unknown' ? this.getChartType(this.props.type) : ''}
+                <div className="currentValues">
+                    <ValueBar value={this.props.state.sys_info.cpu.load.currentload || 0.00} opts={{ maxValue: 100 }} />
+                </div>
+                <div className="cpuUsageChart">
+                    {this.getChartType(this.props.self.type)}
+                </div>
             </div>
         )
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../../common').mapStateToProps(currentState, ownProps);
 
     const {
         state: {
             app: {
                 common,
-                sys_info
-            }
+                sys_info,
+            },
+            sys,
         },
-        self,
+        self
     } = adv;
 
     return {
-        state,
-        self
-    };
-}), common.mapDispatchToProps)(Monitor);
+        state: {
+            app: {
+                common,
+                sys,
+            },
+            sys_info
+        },
+        self,
+    }
+}, common.mapDispatchToProps)(Monitor);

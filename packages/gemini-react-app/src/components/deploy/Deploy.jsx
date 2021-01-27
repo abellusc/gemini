@@ -13,12 +13,16 @@ class Deploy extends React.Component {
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../common').mapStateToProps(currentState, ownProps);
 
     const {
         state: {
-            app
+            app: {
+                common,
+                sys_info
+            },
+            sys,
         },
         self,
     } = adv;
@@ -27,4 +31,4 @@ export default connect(((state, ownProps) => {
         state,
         self
     };
-}), common.mapDispatchToProps)(Deploy);
+}, common.mapDispatchToProps)(Deploy);

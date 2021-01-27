@@ -76,18 +76,24 @@ class Loading extends React.Component {
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../common').mapStateToProps(currentState, ownProps);
 
     const {
         state: {
-            app
+            app: {
+                common
+            }
         },
         self,
     } = adv;
 
     return {
-        state,
+        state: {
+            app: {
+                common
+            }
+        },
         self
     };
-}), common.mapDispatchToProps)(Loading);
+}, common.mapDispatchToProps)(Loading);

@@ -1,0 +1,18 @@
+.ValueBar {
+    display: block;
+
+    .value {
+        color: white;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .bar {
+        background-color: black;
+        border: 2px solid grey;
+        height: 100%;
+    }
+}

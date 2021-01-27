@@ -17,6 +17,7 @@ const { ipcRenderer } = window;
 
 class App extends React.Component {
   loadingElement;
+  _pending = false;
   
   constructor() {
     super();
@@ -51,10 +52,14 @@ class App extends React.Component {
       if (Object.keys(response).length > 0) {
         props.dispatch(props.actions.hydrateFromSystem(response));
       }
+      this._pending = false;
     });
     
     setInterval(() => {
-      ipcRenderer.send('message', 'redux_hydrate')
+      if (!this._pending) {
+        this._pending = true;
+        ipcRenderer.send('message', 'redux_hydrate')
+      }
     }, 1000);
   }
 
@@ -109,13 +114,11 @@ class App extends React.Component {
   }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('./common').mapStateToProps(currentState, ownProps);
 
     const {
-        state: {
-            app
-        },
+        state,
         self,
     } = adv;
 
@@ -123,4 +126,4 @@ export default connect(((state, ownProps) => {
         state,
         self
     };
-}), common.mapDispatchToProps)(App);
+}, common.mapDispatchToProps)(App);

@@ -70,5 +70,8 @@ export function rootReducer(state: IApplicationState = initialState, action: IFS
 
     console.log('done');
 
+    console.log('new state');
+    console.log(clone);
+
     return clone;
 }

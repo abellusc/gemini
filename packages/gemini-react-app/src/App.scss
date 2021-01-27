@@ -53,3 +53,8 @@
 
 /* ===== Usage ===== */
 @include font-face(photon-entypo, "./fonts/photon-entypo", normal, normal);
+
+.module {
+  display: inline-block;
+  margin: 25px;
+}

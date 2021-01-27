@@ -36,45 +36,49 @@ class SystemInformation extends React.Component {
     }
 
     render() {
-        if (!this.props.state || this.props.state.app) {
-            return '';
-        }
-
-        console.log(this.props.state);
-        return (
+        return (!!this.props.state.app ? (
             <div className="SystemInformation module">
                 <div className="header"><FontAwesomeIcon icon={computerIcon} style={{fontSize: '36px', verticalAlign: 'middle', lineHeight: '50px', marginRight: '20px'}} /> System Information</div>
                 <div className="contents">
                     <ul className="list">
-                    <li>Platform: {!!this.props.state.app.common.sys && !!this.props.state.app.common.sys.platform ? this.props.state.app.common.sys.platform.name : 'not reported by system'}</li>
-                    <li>Release: {!!this.props.state.app.common.sys && !!this.props.state.app.common.sys.platform ? this.props.state.app.common.sys.platform.version : 'not reported by system'}</li>
-                    <li>CPU: {!!this.props.state.common.sys && !!this.props.state.common.sys.cpu ? (
+                    <li>Platform: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.name : 'not reported by system'}</li>
+                    <li>Release: {!!this.props.state.sys && !!this.props.state.sys.platform ? this.props.state.sys.platform.version : 'not reported by system'}</li>
+                    <li>CPU: {!!this.props.state.sys && !!this.props.state.sys.cpu ? (
                         <>
-                            {this.props.state.common.sys.cpu.model}, cores: {this.props.state.app.common.sys.cpu.cores} @ {this.props.state.app.common.sys.cpu.speed} GHz
+                            {this.props.state.sys.cpu.model}, cores: {this.props.state.sys.cpu.cores} @ {this.props.state.sys.cpu.speed} GHz
                         </>
                      ) : 'not reported by system'}</li>
                     <li>GPU: TBD</li>
                     </ul>
                 </div>
             </div>
-        );
+        ) : '');
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../../common').mapStateToProps(currentState, ownProps);
 
+    // property deconstruction go brrrrrr
     const {
         state: {
             app: {
-                sys_info,
-            }
+                common,
+                sys_info
+            },
+            sys,
         },
         self,
     } = adv;
 
     return {
-        state,
+        state: {
+            app: {
+                common,
+                sys_info
+            },
+            sys
+        },
         self
     };
-}), common.mapDispatchToProps)(SystemInformation);
+}, common.mapDispatchToProps)(SystemInformation);

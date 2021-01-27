@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import * as common from '../../common';
+import { connect } from 'react-redux';
 import '../components.scss';
 import ErrorMessage from '../error/ErrorMessage';
 import Monitor from './monitor/Monitor';
@@ -29,19 +29,18 @@ class Dashboard extends React.Component {
             </>
             ) : '' }
             <div className="Dashboard feature">
-                <div className="container">
-                    <SystemInformation />
-                    <Monitor type="line" />
-                </div>
+                <SystemInformation />
+                <Monitor type="line" data_source={async () => ([])} width={500} height={200} />
             </div>
             </>
         )
     }
 }
 
-export default connect(((state, ownProps) => {
-    const adv = common.mapStateToProps(state, ownProps);
+export default connect((currentState, ownProps) => {
+    const adv = require('../../common').mapStateToProps(currentState, ownProps);
 
+    // property deconstruction go brrrrrr
     const {
         state: {
             app: {
@@ -52,7 +51,11 @@ export default connect(((state, ownProps) => {
     } = adv;
 
     return {
-        state,
+        state: {
+            app: {
+                common,
+            }
+        },
         self
     };
-}), common.mapDispatchToProps)(Dashboard);
+}, common.mapDispatchToProps)(Dashboard);
