@@ -1,0 +1,11 @@
+{
+  "name": "@solsticeproject/gemini-agent-rpc",
+  "version": "1.0.0",
+  "description": "An rpc protocol (protobuf) for communicating with a gemini agent",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Solstice Project",
+  "license": "MIT"
+}
